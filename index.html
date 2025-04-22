@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrindrPlus Maps API Key Tester</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --secondary: #222222;
+            --success: #4BB543;
+            --warning: #FFCC00;
+            --danger: #FF0033;
+            --light: #F8F9FA;
+            --dark: #202124;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Roboto', Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #E04800;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 25px;
+        }
+
+        .status {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        .status.success {
+            background-color: rgba(75, 181, 67, 0.1);
+            color: var(--success);
+        }
+
+        .status.error {
+            background-color: rgba(255, 0, 51, 0.1);
+            color: var(--danger);
+        }
+
+        .status.warning {
+            background-color: rgba(255, 204, 0, 0.1);
+            color: var(--warning);
+        }
+
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: monospace;
+            margin-top: 15px;
+        }
+
+        .steps {
+            margin-top: 20px;
+        }
+
+        .steps ol {
+            padding-left: 25px;
+        }
+
+        .steps li {
+            margin-bottom: 10px;
+        }
+
+        .note {
+            background-color: rgba(254, 82, 0, 0.1);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i>GrindrPlus Maps API Key Tester</h1>
+        <p>For LSPatch users who need to verify their Google Maps API key works properly</p>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <h2><i class="fas fa-vial" style="margin-right: 10px;"></i>Test Your API Key</h2>
+            <div class="input-group">
+                <label for="api-key">Enter your Google Maps API Key:</label>
+                <input type="text" id="api-key" placeholder="YOUR_API_KEY">
+            </div>
+            <button id="test-key"><i class="fas fa-check-circle" style="margin-right: 8px;"></i>Test API Key</button>
+
+            <div class="result" id="result" style="display: none;">
+                <div class="status" id="status"></div>
+                <div id="message"></div>
+                <pre id="response-data"></pre>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><i class="fas fa-info-circle" style="margin-right: 10px;"></i>How to Fix Maps in GrindrPlus (LSPatch Version)</h2>
+            <p>LSPatch users experience maps issues in Grindr due to signature validation problems. Here's how to fix it:</p>
+            
+            <div class="steps" style="background-color: #f5f5f5; padding: 20px; border-radius: 6px; margin-top: 15px;">
+                <ol style="padding-left: 30px; list-style-position: outside;">
+                    <li style="margin-bottom: 12px; padding-left: 10px;">Go to the <a href="https://console.cloud.google.com/" target="_blank">Google Cloud Console</a>.</li>
+                    <li style="margin-bottom: 12px; padding-left: 10px;">Select or create a new Google Cloud project (name doesn't matter).</li>
+                    <li style="margin-bottom: 12px; padding-left: 10px;">Make sure your project is selected in the top dropdown menu.</li>
+                    <li style="margin-bottom: 12px; padding-left: 10px;">Navigate to "APIs & Services" > "Credentials" in the sidebar.</li>
+                    <li style="margin-bottom: 12px; padding-left: 10px;">Click "+ Create Credentials" and choose "API key".</li>
+                    <li style="margin-bottom: 12px; padding-left: 10px;">Your new API key will be displayed. Click "Close".</li>
+                    <li style="margin-bottom: 12px; padding-left: 10px;">For GrindrPlus, <strong>do not set any restrictions</strong> on your API key.</li>
+                    <li style="margin-bottom: 12px; padding-left: 10px;">Copy your API key and paste it into GrindrPlus settings.</li>
+                    <li style="margin-bottom: 12px; padding-left: 10px;">Use the install button in GrindrPlus to complete setup.</li>
+                </ol>
+            </div>
+            
+            <div class="note">
+                <i class="fas fa-info-circle" style="margin-right: 8px; color: var(--primary);"></i>
+                <strong>Important:</strong> You may be prompted for credit card details by Google, even though use of the Maps API is part of their 'free tier'.
+            </div>
+            
+            <div class="note">
+                <i class="fas fa-cog" style="margin-right: 8px; color: var(--primary);"></i>
+                <strong>API Activation Note:</strong> You may need to enable the "Geocoding API", "Maps JavaScript API" and "Maps SDK for Android" in your Google Cloud Console for your key to work properly with GrindrPlus.
+            </div>
+            
+            <div class="note">
+                <i class="fas fa-shield-alt" style="margin-right: 8px; color: var(--primary);"></i>
+                <strong>Privacy Note:</strong> This tool doesn't collect or save your API key. Everything is done on the client side, and the source code is available at <a href="https://github.com/R0rt1z2/maps-testing" target="_blank">https://github.com/R0rt1z2/maps-testing</a>.
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>This tool is for GrindrPlus users to test their Maps API key | Not affiliated with Grindr or Google</p>
+    </footer>
+
+    <script>
+        document.getElementById('test-key').addEventListener('click', async () => {
+            const apiKey = document.getElementById('api-key').value.trim();
+            const resultDiv = document.getElementById('result');
+            const statusDiv = document.getElementById('status');
+            const messageDiv = document.getElementById('message');
+            const responseDataDiv = document.getElementById('response-data');
+            
+            if (!apiKey) {
+                alert('Please enter an API key before testing.');
+                return;
+            }
+            
+            resultDiv.style.display = 'block';
+            statusDiv.className = 'status';
+            statusDiv.textContent = 'Testing...';
+            messageDiv.textContent = '';
+            responseDataDiv.textContent = '';
+            
+            try {
+                const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=USA&key=${apiKey}`);
+                const data = await response.json();
+                
+                responseDataDiv.textContent = JSON.stringify(data, null, 2);
+                
+                if (data.status === 'OK') {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = 'Success! Your API Key Works';
+                    messageDiv.innerHTML = `
+                        <p>Your Google Maps API key is working correctly!</p>
+                        <p>This key should work properly with GrindrPlus. Follow these steps:</p>
+                        <div style="background-color: #f5f5f5; padding: 15px; border-radius: 6px; margin-top: 10px;">
+                            <p style="margin-bottom: 10px;"><strong>Steps:</strong></p>
+                            <ol style="padding-left: 30px; list-style-position: outside;">
+                                <li style="margin-bottom: 8px; padding-left: 10px;">Copy this API key</li>
+                                <li style="margin-bottom: 8px; padding-left: 10px;">Open GrindrPlus settings</li>
+                                <li style="margin-bottom: 8px; padding-left: 10px;">Paste the key in the "Maps API Key" field</li>
+                                <li style="margin-bottom: 8px; padding-left: 10px;">Use the install button to apply changes</li>
+                            </ol>
+                        </div>
+                    `;
+                } else if (data.status === 'REQUEST_DENIED' && data.error_message) {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = 'API Key Error';
+                    
+                    if (data.error_message.includes("API key is invalid")) {
+                        messageDiv.innerHTML = `
+                            <p>Your API key is invalid. Please double-check you've copied it correctly.</p>
+                            <p>If you've just created this key, it may take a few minutes to activate.</p>
+                        `;
+                    } else if (data.error_message.includes("not authorized")) {
+                        messageDiv.innerHTML = `
+                            <p>Your API key is valid but you need to enable the Geocoding API:</p>
+                            <ol>
+                                <li>Go to the Google Cloud Console</li>
+                                <li>Select your project</li>
+                                <li>Navigate to "APIs & Services" > "Library"</li>
+                                <li>Search for "Geocoding API" and click on it</li>
+                                <li>Click "Enable"</li>
+                                <li>Then test your key again</li>
+                            </ol>
+                        `;
+                    } else {
+                        messageDiv.textContent = data.error_message;
+                    }
+                } else {
+                    statusDiv.className = 'status warning';
+                    statusDiv.textContent = 'Warning: ' + data.status;
+                    messageDiv.textContent = 'The API returned a non-success status. Check the response details below.';
+                }
+            } catch (error) {
+                statusDiv.className = 'status error';
+                statusDiv.textContent = 'Connection Error';
+                messageDiv.textContent = 'Failed to connect to the Google Maps API. Check your internet connection.';
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
